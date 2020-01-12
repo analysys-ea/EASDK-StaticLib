@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param config 配置信息
 + (void)startWithConfig:(AnalysysEaConfig *)config;
 
+/// 获取 SDK 版本号
++ (NSString *)SDKVersion;
+
 #pragma mark - 推送
 
 /// 追踪推送消息
