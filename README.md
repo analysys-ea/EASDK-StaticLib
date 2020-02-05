@@ -2,7 +2,7 @@
 
 * iOS 常见问题
 
-* [iOS 客户端 SDK 下载](https://github.com/analysys-ea/EASDK-StaticLib)
+* iOS 客户端 SDK 下载：[动态库](https://github.com/analysys-ea/EASDK)、[静态库](https://github.com/analysys-ea/EASDK-StaticLib)
 
 ---
 
@@ -26,11 +26,14 @@
 
 #### 组成
 
+SDK 有[动态库](https://github.com/analysys-ea/EASDK)和[静态库](https://github.com/analysys-ea/EASDK-StaticLib)两种版本，您可以根据自身需要选择其中一种集成即可。
+
 * 动态库文件：
 
 ```
 EASDK.framework
 ```
+
 * 静态库文件：
 
 ```
@@ -67,10 +70,10 @@ pod 'EASDK' // 易达 SDK
 * 如果需要安装指定版本，则按照以下方式
 
 ```
-pod 'EASDK', '1.0' // 示例版本号
+pod 'EASDK', '1.0.0' // 示例版本号
 ```
-* 特别注意：由于iOS 10以后苹果系统增加的 NSNotification Service Extension 扩展能够用于统计推送到达率，如果在 APP 中添加了该扩展而无法引入第三方的类文件，则需要使用以下“选择2”方式手动下载静态库并导入项目。将静态库及相关头文件添加到项目中的时候，需要同时勾选项目主 target 和 NSNotification Service Extension 扩展target，否则编译会报错。
 
+* 特别注意：由于iOS 10以后苹果系统增加的 NSNotification Service Extension 扩展能够用于统计推送到达率，如果在 APP 中添加了该扩展而无法引入第三方的类文件，则需要使用以下“选择2”方式手动下载静态库并导入项目。将静态库及相关头文件添加到项目中的时候，需要同时勾选项目主 target 和 NSNotification Service Extension 扩展target，否则编译会报错。
 
 **选择2：手动下载静态库导入**
 
@@ -87,12 +90,12 @@ pod 'EASDK', '1.0' // 示例版本号
 ```
 #import <EASDK/AnalysysEaManager.h> // 易达 SDK
 ```
+
 * 如果使用的是静态库，在 AppDelegate.m 中引入以下头文件：
 
 ```
 #import "AnalysysEaManager.h" // 易达 SDK
 ```
-
 
 #### 添加初始化代码
 
@@ -112,6 +115,7 @@ config.appKey= @"易达后台创建项目的 AppKey";
 
 ```
 // 上报pushId（解析后的deviceToken）
+// 目前易达 iOS SDK 只支持苹果 APNS 推送通道
 [AnalysysAgent setPushProvider:AnalysysPushAPNS pushID:hexToken];
 // 上报用户手机号码
 [AnalysysAgent profileSet:@"$PHONE" propertyValue:value];
@@ -146,69 +150,11 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 * 这里只列举易达 EASDK 相关接口
 
-#### 设置事件接收者
-
-**支持的版本**
-
-4.3.5 及以上版本。
-
-**接口说明**
-
-设置事件接收代理对象。当方舟 SDK 每次用户触发事件后，将会发送事件数据到指定代理对象，在代理类中实现的代理方法将会接收并处理对应事件。
-
-**接口定义**
-
-```
-+ (void)setEventReceiver:(id)receiver;
-```
-
-**参数说明**
-
-* receiver
-
-* 事件接收者，这里设置为下面的获取事件接收代理对象，通过 \[AnalysysEaManager getObserverListener\] 方法获取，否则 SDK 将可能无法正常接收事件。
-
-**接口返回**
-
-无
-
-**注意事项**
-
-此接口为方舟 SDK 接口，通过 AnalysysAgent 调用。
-
-#### 获取事件接收代理
-
-**支持的版本**
-
-1.0及以上版本。
-
-**接口说明**
-
-获取事件接收代理，用户从方舟 SDK 获取用户事件，这里将 EASDKManager 对象作为事件接收者。
-
-**接口定义**
-
-```
-+ (id)getObserverListener;
-```
-
-**参数说明**
-
-无
-
-**接口返回**
-
-返回事件接收对象。
-
-**注意事项**
-
-无
-
 #### 启动 SDK
 
 **支持的版本**
 
-1.0及以上版本。
+1.0.0 及以上版本。
 
 **接口说明**
 
@@ -234,11 +180,39 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 无
 
+#### 获取 SDK 版本号
+
+**支持的版本**
+
+1.0.0 及以上版本。
+
+**接口说明**
+
+获取 SDK 当前版本号。
+
+**接口定义**
+
+```
++ (NSString *)SDKVersion;
+```
+
+**参数说明**
+
+无
+
+**接口返回**
+
+返回 SDK 当前版本号。
+
+**注意事项**
+
+无
+
 #### 追踪推送消息
 
 **支持的版本**
 
-1.0及以上版本。
+1.0.0 及以上版本。
 
 **接口说明**
 
@@ -268,6 +242,62 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 需要在对应的系统回调方法里调用，并根据具体消息事件类型（收到推送/点击推送）传入对应的参数。详细见下方备注。
 
+#### 显示设置别名标签
+
+**支持的版本**
+
+1.0.0 及以上版本。
+
+**接口说明**
+
+显示设置别名的悬浮标签。可以给当前页面技术标识（如 xxxController）设置一个对应的别名，当在管理后台创建活动时，下拉框将会展示设置的别名。
+
+**接口定义**
+
+```
++ (void)showAliasTag;
+```
+
+**参数说明**
+
+无
+
+**接口返回**
+
+无
+
+**注意事项**
+
+无
+
+#### 隐藏设置别名标签
+
+**支持的版本**
+
+1.0.0 及以上版本。
+
+**接口说明**
+
+隐藏设置别名的悬浮标签。
+
+**接口定义**
+
+```
++ (voidw)hideAliasTag;
+```
+
+**参数说明**
+
+无
+
+**接口返回**
+
+无
+
+**注意事项**
+
+无
+
 ### 四、备注
 
 #### APNS 推送
@@ -294,13 +324,23 @@ APP 进程在被杀死的情况下，iOS 10.0 以后可以通过 Notification Se
 
 #### 配置 App Groups
 
-为保证主 APP 进程被杀死的情况下，扩展能正常访问主 APP 的某些数据，APP 客户端需要添加进程间数据共享：
+为保证主 APP 进程被杀死的情况下，扩展进程能正常访问主 APP 的某些数据，从而使 SDK 能正常统计推送到达率，APP 客户端需要添加进程间数据共享：
 
 * 选择主 target -》 Capabilities，添加 App Groups，填入分组名 group.easdk，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
 
 * 选择 Notification Service Extension target -》 Capabilities，添加 App Groups，勾选分组 group.easdk，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
 
 ### 六、FAQ
+
+#### 集成动态库后，添加 Notification Service Extension 扩展并在代理方法中调用 SDK 方法，编译报错
+
+* 动态库目前不支持在该扩展中调用三方 SDK，换用静态库集成即可
+
+* 如果必须使用动态库集成，则需删除 Extension
+
+#### 后台统计的推送到达不准或无数据
+
+* 若后台统计不到推送到达，先检查 APP 是否添加了 Notification Service Extension 扩展，且添加了 App Groups 并设置其 Id 为 group.easdk
 
 #### 添加 Notification Service Extension 扩展并在相应代理方法中调用 SDK 方法，编译报错
 
@@ -321,7 +361,5 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 * 请仔细阅读文档，查看是否有遗漏。
 
 * 给我们的技术 support 发邮件：shadeless99@126.com
-
-
 
 
