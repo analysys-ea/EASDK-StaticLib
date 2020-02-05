@@ -53,13 +53,13 @@ AnalysysEaConfig.h
 
 ### 二、快速开始
 
-#### 创建项目
+#### 1、获取项目 AppKey
 
-* 登录[易达系统](https://ea.analysys.cn:8088/app.html#/Login)，创建项目，项目创建完成后自动生成对应的AppKey用以标识该项目（应用）。
+* 登录[易达系统](https://ea.analysys.cn/app.html#/Login)，创建项目，项目创建完成后自动生成对应的AppKey用以标识该项目（应用）。
 
-#### 导入 SDK
+#### 2、集成易达 SDK
 
-**选择1：cocoapods 导入动态库**
+**方式 1：cocoapods 导入动态库**
 
 * 打开 Podfile 文件，添加如下代码
 
@@ -75,7 +75,7 @@ pod 'EASDK', '1.0.0' // 示例版本号
 
 * 特别注意：由于iOS 10以后苹果系统增加的 NSNotification Service Extension 扩展能够用于统计推送到达率，如果在 APP 中添加了该扩展而无法引入第三方的类文件，则需要使用以下“选择2”方式手动下载静态库并导入项目。将静态库及相关头文件添加到项目中的时候，需要同时勾选项目主 target 和 NSNotification Service Extension 扩展target，否则编译会报错。
 
-**选择2：手动下载静态库导入**
+**方式 2：手动下载静态库导入**
 
 * [下载最新静态库 SDK](https://github.com/analysys-ea/EASDK-StaticLib)
 
@@ -83,7 +83,7 @@ pod 'EASDK', '1.0.0' // 示例版本号
 
 * 选中项目 target ，在 Build Phases 》Link Binary With Libiaries 中检查对应的静态库.a文件是否已经添加，没有则需手动添加进去。
 
-#### 添加头文件
+#### 3、添加头文件
 
 * 如果使用的是动态库，在 AppDelegate.m 中引入以下头文件：
 
@@ -97,7 +97,7 @@ pod 'EASDK', '1.0.0' // 示例版本号
 #import "AnalysysEaManager.h" // 易达 SDK
 ```
 
-#### 添加初始化代码
+#### 4、添加初始化代码
 
 * 请将以下代码添加到 -\(BOOL\)application:\(UIApplication \*\)application didFinishLaunchingWithOptions:\(NSDictionary \*\)launchOptions
 
@@ -125,14 +125,7 @@ config.appKey= @"易达后台创建项目的 AppKey";
 [AnalysysAgent profileSet:@"$WECHATOPENID" propertyValue:value];
 ```
 
-* 通过方舟 SDK 埋点：
-
-```
-// 对应埋点事件
-[AnalysysAgent track:@"事件ID" properties:@{事件属性}];
-```
-
-#### 成功运行
+#### 5、成功运行
 
 * 真机调试该项目，如果控制台输出如下日志，代表 SDK 集成成功。
 
@@ -141,7 +134,7 @@ config.appKey= @"易达后台创建项目的 AppKey";
 [EASDKManager.m:216行] EASDK 启动成功！
 AppKey：ecaaab42502jgdg9870fd0740ce374daa
 userId：1BCAF1D0-C8C0-46A8-866F-005832024259
-*************************************************
+****************************************************
 ```
 
 ### 三、iOS API
@@ -232,7 +225,10 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 * msg
 
-* 消息内容。将收到的 NSDictionary 类型的消息内容传入。
+* 系统回调的消息内容。
+* 应用在前台收到推送，点击回调，msg 传 notification.request.content.userInfo
+* 应用在后台收到推送，点击回调，msg 传 response.notification.request.content.userInfo
+* 应用进程被杀死的情况下收到推送，推送到达回调，msg 传 request.content.userInfo
 
 **接口返回**
 
@@ -241,62 +237,6 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 **注意事项**
 
 需要在对应的系统回调方法里调用，并根据具体消息事件类型（收到推送/点击推送）传入对应的参数。详细见下方备注。
-
-#### 显示设置别名标签
-
-**支持的版本**
-
-1.0.0 及以上版本。
-
-**接口说明**
-
-显示设置别名的悬浮标签。可以给当前页面技术标识（如 xxxController）设置一个对应的别名，当在管理后台创建活动时，下拉框将会展示设置的别名。
-
-**接口定义**
-
-```
-+ (void)showAliasTag;
-```
-
-**参数说明**
-
-无
-
-**接口返回**
-
-无
-
-**注意事项**
-
-无
-
-#### 隐藏设置别名标签
-
-**支持的版本**
-
-1.0.0 及以上版本。
-
-**接口说明**
-
-隐藏设置别名的悬浮标签。
-
-**接口定义**
-
-```
-+ (voidw)hideAliasTag;
-```
-
-**参数说明**
-
-无
-
-**接口返回**
-
-无
-
-**注意事项**
-
-无
 
 ### 四、备注
 
@@ -360,6 +300,6 @@ clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
 * 请仔细阅读文档，查看是否有遗漏。
 
-* 给我们的技术 support 发邮件：shadeless99@126.com
+* 给我们的技术 support 发邮件：guoyongqing@analysys.com.cn
 
 
