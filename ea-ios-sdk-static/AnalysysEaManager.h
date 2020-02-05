@@ -29,14 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param msg 推送消息
 + (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg;
 
-#pragma mark - 标签别名
-
-/// 显示别名标签
-+ (void)showAliasTag;
-
-/// 隐藏别名标签
-+ (void)hideAliasTag;
-
 @end
 
 NS_ASSUME_NONNULL_END
