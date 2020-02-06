@@ -369,7 +369,7 @@ ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
 
-### 七、技术支持
+### 六、技术支持
 
 当出现问题时：
 
