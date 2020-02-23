@@ -134,7 +134,7 @@ NSLog(@"\n>>>[DeviceToken Success]:%@\n\n", hexToken);
 
 // 上报pushId（解析后的deviceToken）
 // 目前易达 iOS SDK 只支持苹果 APNS 推送通道
-[AnalysysAgent setPushProvider:AnalysysPushAPNS pushID:hexToken];
+[AnalysysEaManager registerDeviceToken:hexToken];
 ```
 
 * 若 APP 支持推送功能，在收到推送及点击推送的系统回调方法中，添加对应的方法：
@@ -290,6 +290,36 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 **注意事项**
 
 无
+
+#### 注册推送 deviceToken
+
+**支持的版本**
+
+1.0.0 及以上版本。
+
+**接口说明**
+
+注册 APP 启动后由系统返回的 deviceToken。
+
+**接口定义**
+
+```
++ (void)registerDeviceToken:(NSString *)deviceToken;
+```
+
+**参数说明**
+
+* deviceToken
+
+* app 启动后由系统返回的用于推送的 deviceToken。
+
+**接口返回**
+
+无
+
+**注意事项**
+
+注册的 token 需是经过解析后的。
 
 #### 追踪推送消息
 
