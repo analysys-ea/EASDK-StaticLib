@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 推送
 
+/// 注册远程推送获取的 deviceToken
+/// @param deviceToken APNS 远程推送由系统返回的 deviceToken
++ (void)registerDeviceToken:(NSString *)deviceToken;
+
 /// 追踪推送消息
 /// @param type 推送消息事件类型，到达/点击
 /// @param msg 推送消息
