@@ -24,6 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 推送
 
+
+/// 注册 APNS 远程推送
+/// @param delegate 实现系统推送通知回调方法的代理类对象，通常为 AppDelegate
++ (void)registerForRemoteNotificationWithDelegate:(id)delegate;
+
 /// 注册远程推送获取的 deviceToken
 /// @param deviceToken APNS 远程推送由系统返回的 deviceToken
 + (void)registerDeviceToken:(NSString *)deviceToken;

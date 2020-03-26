@@ -291,11 +291,41 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 无
 
+#### 注册 APNS 远程推送
+
+**支持的版本**
+
+1.1.0 及以上版本。
+
+**接口说明**
+
+注册 APNS 远程推送，封装了系统注册远程推送的 API。
+
+**接口定义**
+
+```
++ (void)registerForRemoteNotificationWithDelegate:(id)delegate;
+```
+
+**参数说明**
+
+* delegate
+
+* 实现系统推送回调方法的类，一般为当前 AppDelegate 类对象本身。
+
+**接口返回**
+
+无
+
+**注意事项**
+
+无
+
 #### 注册推送 deviceToken
 
 **支持的版本**
 
-1.0.0 及以上版本。
+1.0.9 及以上版本。
 
 **接口说明**
 
