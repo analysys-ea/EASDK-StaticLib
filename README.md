@@ -33,7 +33,7 @@ SDK 有[动态库](https://github.com/analysys-ea/EASDK)和[静态库](https://g
 * 动态库文件：
 
 ```
-EASDK.framework
+AnalysysEasyTouch.framework
 ```
 
 * 静态库文件：
@@ -66,13 +66,13 @@ AnalysysEaConfig.h
 * 打开 Podfile 文件，添加如下代码
 
 ```
-pod 'EASDK' // 易达 SDK
+pod 'AnalysysEasyTouch' // 易达 SDK
 ```
 
 * 如果需要安装指定版本，则按照以下方式
 
 ```
-pod 'EASDK', '1.0.0' // 示例版本号
+pod 'AnalysysEasyTouch', '1.1.0' // 示例版本号
 ```
 
 * 特别注意：由于iOS 10以后苹果系统增加的 NSNotification Service Extension 扩展能够用于统计推送到达率，如果在 APP 中添加了该扩展而无法引入第三方的类文件，则需要使用以下“选择2”方式手动下载静态库并导入项目。将静态库及相关头文件添加到项目中的时候，需要同时勾选项目主 target 和 NSNotification Service Extension 扩展target，否则编译会报错。
@@ -90,7 +90,7 @@ pod 'EASDK', '1.0.0' // 示例版本号
 * 如果使用的是动态库，在 AppDelegate.m 中引入以下头文件：
 
 ```
-#import <EASDK/AnalysysEaManager.h> // 易达 SDK
+#import <AnalysysEasyTouch/AnalysysEaManager.h> // 易达 SDK
 ```
 
 * 如果使用的是静态库，在 AppDelegate.m 中引入以下头文件：
@@ -121,7 +121,13 @@ config.appKey= @"易达后台创建项目的 AppKey";
 [AnalysysAgent profileSet:@"$WECHATOPENID" propertyValue:value];
 ```
 
-* 若您的 APP 支持远程推送功能，在成功注册推送并收到 deviceToken 的系统回调方法 - \(void\)application:\(UIApplication \*\)application didRegisterForRemoteNotificationsWithDeviceToken:\(NSData \*\)deviceToken 中上报解析后的 deviceToken
+* 若您的 APP 支持远程推送功能，SDK 为您封装了苹果原生 APNS 远程推送注册接口
+
+```
+// 注册 APNS 远程推送
+[AnalysysEasyTouch registerRemoteNotificationWithDelegate:self];
+```
+* 在成功注册推送并收到 deviceToken 的系统回调方法 - \(void\)application:\(UIApplication \*\)application didRegisterForRemoteNotificationsWithDeviceToken:\(NSData \*\)deviceToken 中上报解析后的 deviceToken
 
 ```
 // iOS 13 之后的新的转换方法，兼容之前的版本
@@ -221,7 +227,7 @@ self.contentHandler(self.bestAttemptContent);
 
 ```
 ********************** [EALog] *********************
-[EASDKManager.m:216行] EASDK 启动成功！
+[EASDKManager.m:216行] AnalysysEasyTouch 启动成功！
 AppKey：ecaaab42502jgdg9870fd0740ce374daa
 userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 ****************************************************
@@ -231,7 +237,7 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 * 方舟 SDK 接口请参考 AnalysysAgent 对应文档
 
-* 这里只列举易达 EASDK 相关接口
+* 这里只列举易达 AnalysysEasyTouch 相关接口
 
 #### 获取事件监听对象
 
