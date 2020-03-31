@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 基础功能
 
+/// 获取事件监听对象，用于实时捕获系统和用户事件
++ (id)getObserverListener;
+
 /// 启动SDK
 /// @param config 配置信息
 + (void)startWithConfig:(AnalysysEaConfig *)config;
@@ -23,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)SDKVersion;
 
 #pragma mark - 推送
-
 
 /// 注册 APNS 远程推送
 /// @param delegate 实现系统推送通知回调方法的代理类对象，通常为 AppDelegate
