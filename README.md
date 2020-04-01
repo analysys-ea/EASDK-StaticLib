@@ -1,8 +1,8 @@
 # iOS SDK
 
-* iOS 常见问题
+* 请先 cocoapods 集成方舟 SDK 易达专用版，或者手动下载：[AnalysysAgent-EasyTouch](https://github.com/analysys-ea/UBASDK)
 
-* iOS 客户端 SDK 下载：[动态库](https://github.com/analysys-ea/EASDK)、[静态库](https://github.com/analysys-ea/EASDK-StaticLib)
+* 易达 iOS SDK 下载：[动态库](https://github.com/analysys-ea/EASDK)、[静态库](https://github.com/analysys-ea/EASDK-StaticLib)
 
 ---
 
