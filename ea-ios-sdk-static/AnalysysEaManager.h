@@ -38,7 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 追踪推送消息
 /// @param type 推送消息事件类型，到达/点击
 /// @param msg 推送消息
-+ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg;
+/// @param groupIdentifier App Groups Id
++ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg groupIdentifier:(NSString *)groupIdentifier;
 
 #pragma mark - 别名
 

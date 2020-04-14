@@ -33,6 +33,8 @@ typedef NS_ENUM(NSUInteger, PushEventType) {
 @property (nonatomic, copy) NSString *appKey;
 /// SDK 运行环境，默认为线上环境
 @property (nonatomic, assign) EnvType envType;
+/// app 创建的 App Groups ID
+@property (nonatomic, copy) NSString *applicationGroupIdentifier;
 
 @end
 

@@ -1,8 +1,8 @@
 # iOS SDK
 
-* 请先 cocoapods 集成方舟 SDK 易达专用版，或者手动下载：[AnalysysAgent-EasyTouch](https://github.com/analysys-ea/UBASDK)
+* iOS 常见问题
 
-* 易达 iOS SDK 下载：[动态库](https://github.com/analysys-ea/EASDK)、[静态库](https://github.com/analysys-ea/EASDK-StaticLib)
+* iOS 客户端 SDK 下载：[动态库](https://github.com/analysys-ea/EASDK)、[静态库](https://github.com/analysys-ea/EASDK-StaticLib)
 
 ---
 
@@ -187,7 +187,7 @@ completionHandler(UNNotificationPresentationOptionBadge
 }
 ```
 
-#### 5、配置统计推送到达所需的 Notification Service Extension 扩展及 AppGroups （非必须）
+#### 5、配置统计推送到达所需的 Notification Service Extension 扩展及 AppGroups
 
 配置这两项，主要针对 APP 支持推送，在进程被杀死的情况下统计推送到达率，若 APP 不支持推送功能，可忽略。若 APP 支持推送功能，不配置扩展和 AppGroups 会导致 APP 在进程被杀死的情况下推送到达无法统计，应用在前、后台的情况不受影响。建议您按照如下步骤进行配置。
 
@@ -217,9 +217,9 @@ self.contentHandler(self.bestAttemptContent);
 
 为保证主 APP 进程被杀死的情况下，扩展进程能正常访问主 APP 的某些数据，从而使 SDK 能正常统计推送到达率，APP 客户端需要添加进程间数据共享：
 
-* 选择主 target -》 Capabilities，添加 App Groups，填入分组名 **group.easdk**，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
+* 选择主 target -》 Capabilities，添加 App Groups，填入分组名 **group.xxx**，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
 
-* 选择 Notification Service Extension target -》 Capabilities，添加 App Groups，勾选分组 **group.easdk**，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
+* 选择 Notification Service Extension target -》 Capabilities，添加 App Groups，勾选分组 **group.xxx**，若分组名显示为红色，点击下方刷新按钮，直至分组名不再为红色
 
 #### 6、成功运行
 
@@ -227,7 +227,7 @@ self.contentHandler(self.bestAttemptContent);
 
 ```
 ********************** [EALog] *********************
-[EASDKManager.m:216行] AnalysysEasyTouch 启动成功！
+AnalysysEasyTouch 启动成功！
 AppKey：ecaaab42502jgdg9870fd0740ce374daa
 userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 ****************************************************
@@ -398,7 +398,7 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 **接口定义**
 
 ```
-+ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg;
++ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg groupIdentifier:(NSString *)groupIdentifier;
 ```
 
 **参数说明**
@@ -416,6 +416,9 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 * 应用在后台收到推送，点击回调，msg 传 response.notification.request.content.userInfo
 
 * 应用进程被杀死的情况下收到推送，推送到达回调，msg 传 request.content.userInfo
+* groupIdentifier
+
+* 创建的 App Groups 分组 id 名称 : group.xxx
 
 **接口返回**
 
@@ -436,7 +439,7 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 * 对应接口，详细参考 iOS API
 
 ```
-+ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg;
++ (void)pushTrack:(PushEventType)type msg:(NSDictionary *)msg groupIdentifier:(NSString *)groupIdentifier;
 ```
 
 ### 五、FAQ
@@ -449,11 +452,15 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 #### 后台统计的推送到达不准或无数据
 
-* 若后台统计不到推送到达，先检查 APP 是否添加了 Notification Service Extension 扩展，且添加了 App Groups 并设置其 Id 为 **group.easdk**
+* 若后台统计不到推送到达，先检查 APP 是否添加了 Notification Service Extension 扩展，且添加了 App Groups 并设置其 Id 为您自定义的名称，推荐以 **group.xxx** 的形式命名
+
+#### 添加完 App Groups ，名称一直显示为红色，编译报错
+
+* 检查苹果官网里您的 App Id、证书配置文件是否都包含了对 App Group 功能的支持，若没有的话，需要勾选或者按照相应指示添加
 
 #### 添加 Notification Service Extension 扩展并在相应代理方法中调用 SDK 方法，编译报错
 
-* 若报错提示信息类似如下，可能是添加静态库时没有将其引入到 Notification Service Extension 对应的 target 中，解决办法是重新将静态库拖入工程中并勾选上主 target 和 扩展 target 即可
+* 若报错提示信息类似如下，可能是添加静态库时没有将其引入到 Notification Service Extension 对应的 target 中，解决办法是重新将静态库拖入工程中并勾选上主 target 和 扩展 target 即可；若您使用的是动态库，则需要将 framework 拖拽到扩展 target 对应的 Link Binary With Libraries 中
 
 ```
 Undefined symbols for architecture arm64:
