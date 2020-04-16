@@ -43,11 +43,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - 别名
 
-/// 显示别名标签
-+ (void)showAliasTag;
-
-/// 隐藏别名标签
-+ (void)hideAliasTag;
+/// 开启/关闭设置页面别名
+/// @param state 为 YES 时开启页面别名设置功能，为 NO 关闭页面别名设置功能
++ (void)setPageTagState:(BOOL)state;
 
 @end
 
