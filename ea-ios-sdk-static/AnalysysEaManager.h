@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 基础功能
 
 /// 获取事件监听对象，用于实时捕获系统和用户事件
-+ (id)getObserverListener;
++ (id)getObserverListener:(NSString *)groupIdentifier;
 
 /// 启动SDK
 /// @param config 配置信息

@@ -17,6 +17,16 @@ typedef NS_ENUM(NSUInteger, EnvType) {
     ENV_DEV,          // 开发环境
 };
 
+/// 日志类型输出
+typedef NS_ENUM(NSUInteger, LogLevel) {
+    LogLevel_DEBUG,   // 输出 debug 日志
+    LogLevel_VERBOSE, // 输出全部日志
+    LogLevel_NONE,    // 不输出日志
+    LogLevel_INFO,    // 输出常规信息 [AnalysysEasyTouch][Log] 标记
+    LogLevel_WARN,    // 输出警告信息 [AnalysysEasyTouch][Warn] 标记
+    LogLevel_ERROR,   // 输出错误信息 [AnalysysEasyTouch][Error] 标记
+};
+
 /// 处理推送消息的类型，推送触达或者点击了推送消息
 typedef NS_ENUM(NSUInteger, PushEventType) {
     PUSH_RECEIVE, // 收到推送消息
@@ -33,6 +43,8 @@ typedef NS_ENUM(NSUInteger, PushEventType) {
 @property (nonatomic, copy) NSString *appKey;
 /// SDK 运行环境，默认为线上环境
 @property (nonatomic, assign) EnvType envType;
+/// 指定输出日志类型
+@property (nonatomic, assign) LogLevel logLevelType;
 /// app 创建的 App Groups ID
 @property (nonatomic, copy) NSString *applicationGroupIdentifier;
 
