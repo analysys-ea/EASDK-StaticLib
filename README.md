@@ -150,7 +150,7 @@ NSLog(@"\n>>>[DeviceToken Success]:%@\n\n", hexToken);
 
 // iOS 6 及以前，收到推送
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-
+// 若实现 Notification Service Extension 扩展，需注释掉，否则可能重复上报
 [AnalysysEaManager pushTrack:PUSH_RECEIVE msg:userInfo];
 }
 
@@ -161,12 +161,12 @@ completionHandler(UIBackgroundFetchResultNewData);
 
 if (application.applicationState == UIApplicationStateActive) {
 
-// App前台 收到推送消息，追踪"App 消息推送"事件
+// App前台 收到推送消息，追踪"App 消息推送"事件，若实现了扩展，需注释掉
 [AnalysysEaManager pushTrack:PUSH_RECEIVE msg:userInfo];
 
 } else if (application.applicationState == UIApplicationStateBackground) {
 
-// App后台 收到推送消息，追踪"App 消息推送"事件
+// App后台 收到推送消息，追踪"App 消息推送"事件，若实现了扩展，需注释掉
 [AnalysysEaManager pushTrack:PUSH_RECEIVE msg:userInfo];
 
 } else {
@@ -179,13 +179,14 @@ if (application.applicationState == UIApplicationStateActive) {
 
 // iOS 10 及以后
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-
+// 若实现了扩展，需注释掉
 [AnalysysEaManager pushTrack:PUSH_RECEIVE msg:notification.request.content.userInfo];
 
 completionHandler(UNNotificationPresentationOptionBadge
 |UNNotificationPresentationOptionAlert);
 }
 ```
+* 注意：若实现了 Notification Service Extension 扩展，当收到推送时，除了会执行扩展的回调方法，还会执行以上收到推送的回调方法，为避免重复上报，需要将上述上报 PUSH_RECEIVE 类型的事件注释掉，或者根据项目需要采用宏定义判断的方式来规避掉重复上报。
 
 #### 5、配置统计推送到达所需的 Notification Service Extension 扩展及 AppGroups
 
@@ -243,7 +244,7 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 
 **支持的版本**
 
-1.0.0 及以上版本。
+1.1.1.2 及以上版本。
 
 **接口说明**
 
@@ -252,12 +253,14 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 **接口定义**
 
 ```
-+ (id)getObserverListener;
++ (id)getObserverListener:(NSString *)groupIdentifier;
 ```
 
 **参数说明**
 
-无
+* groupIdentifier
+
+* 由客户端创建的 App Groups 名称。
 
 **接口返回**
 
