@@ -127,6 +127,7 @@ config.appKey= @"易达后台创建项目的 AppKey";
 // 注册 APNS 远程推送
 [AnalysysEasyTouch registerRemoteNotificationWithDelegate:self];
 ```
+
 * 在成功注册推送并收到 deviceToken 的系统回调方法 - \(void\)application:\(UIApplication \*\)application didRegisterForRemoteNotificationsWithDeviceToken:\(NSData \*\)deviceToken 中上报解析后的 deviceToken
 
 ```
@@ -186,7 +187,8 @@ completionHandler(UNNotificationPresentationOptionBadge
 |UNNotificationPresentationOptionAlert);
 }
 ```
-* 注意：若实现了 Notification Service Extension 扩展，当收到推送时，除了会执行扩展的回调方法，还会执行以上收到推送的回调方法，为避免重复上报，需要将上述上报 PUSH_RECEIVE 类型的事件注释掉，或者根据项目需要采用宏定义判断的方式来规避掉重复上报。
+
+* 注意：若实现了 Notification Service Extension 扩展，当收到推送时，除了会执行扩展的回调方法，还会执行以上收到推送的回调方法，为避免重复上报，需要将上述上报 PUSH\_RECEIVE 类型的事件注释掉，或者根据项目需要采用宏定义判断的方式来规避掉重复上报。
 
 #### 5、配置统计推送到达所需的 Notification Service Extension 扩展及 AppGroups
 
@@ -227,11 +229,11 @@ self.contentHandler(self.bestAttemptContent);
 * 真机调试该项目，如果控制台输出如下日志，代表 SDK 集成成功。
 
 ```
-********************** [EALog] *********************
+******************* [AnalysysEasyTouch][Log] *****************
 AnalysysEasyTouch 启动成功！
 AppKey：ecaaab42502jgdg9870fd0740ce374daa
 userId：1BCAF1D0-C8C0-46A8-866F-005832024259
-****************************************************
+**************************************************************
 ```
 
 ### 三、iOS API
@@ -419,6 +421,7 @@ userId：1BCAF1D0-C8C0-46A8-866F-005832024259
 * 应用在后台收到推送，点击回调，msg 传 response.notification.request.content.userInfo
 
 * 应用进程被杀死的情况下收到推送，推送到达回调，msg 传 request.content.userInfo
+
 * groupIdentifier
 
 * 创建的 App Groups 分组 id 名称 : group.xxx
@@ -497,6 +500,33 @@ Undefined symbols for architecture arm64:
 objc-class-ref in NotificationService.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+#### release 模式下编译报错
+
+* 若报错提示信息类似如下，则需要检查扩展 target 对应的 bitcode 设置是否关闭。默认为 Yes，设置为 No 即可
+
+```
+ld: '/Users/guoyongqing/code/ea-ios-sdk/eaApp/AnalysysEasyTouch.framework/AnalysysEasyTouch' does not contain bitcode. You must rebuild it with bitcode enabled (Xcode setting ENABLE_BITCODE), obtain an updated library from the vendor, or disable bitcode for this target. file '/Users/guoyongqing/code/ea-ios-sdk/eaApp/AnalysysEasyTouch.framework/AnalysysEasyTouch' for architecture arm64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+
+#### Archive 之后打包发布的时候报错，提示 IPA processing failed
+
+* 若出现这种错误，一般是因为引入的三方库中包含了 i386 x86\_64 armv7 arm64 四种架构，iOS 13 之后不支持 32 位架构，需要将 framework 中对应的 32 位架构删除即可，在命令行执行以下命令：
+
+```
+1.使用终端进入到SDK内部
+cd /Users/xxx/xxx/xxx/AnalysysEasyTouch.framework
+
+2.查看当前支持的架构
+lipo -info AnalysysEasyTouch
+可以看到AnalysysEasyTouch当前支持的架构：
+Architectures in the fat file: AnalysysEasyTouch are: i386 x86\_64 armv7 arm64
+
+3.删掉i386，x86\_86架构
+lipo -remove i386 AnalysysEasyTouch -o AnalysysEasyTouch
+lipo -remove x86\_64 AnalysysEasyTouch -o AnalysysEasyTouch
 ```
 
 ### 六、技术支持
