@@ -51,7 +51,7 @@ AnalysysEaConfig.h
 
 #### 注意事项
 
-请参考 iOS 常见问题
+**集成易达 SDK 前，需要先集成：[方舟 SDK 易达专用版](https://github.com/analysys-ea/UBASDK)，方舟 SDK 易达专用版为易达与方舟数据对接专属定制版，方舟 SDK 参考文档：[方舟 SDK 文档](https://docs.analysys.cn/ark/integration/sdk/ios)**
 
 ### 二、快速开始
 
@@ -72,7 +72,7 @@ pod 'AnalysysEasyTouch' // 易达 SDK
 * 如果需要安装指定版本，则按照以下方式
 
 ```
-pod 'AnalysysEasyTouch', '1.1.0' // 示例版本号
+pod 'AnalysysEasyTouch', '1.1.2' // 示例版本号
 ```
 
 * 特别注意：由于iOS 10以后苹果系统增加的 NSNotification Service Extension 扩展能够用于统计推送到达率，如果在 APP 中添加了该扩展而无法引入第三方的类文件，则需要使用以下“选择2”方式手动下载静态库并导入项目。将静态库及相关头文件添加到项目中的时候，需要同时勾选项目主 target 和 NSNotification Service Extension 扩展target，否则编译会报错。
