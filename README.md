@@ -105,7 +105,7 @@ pod 'AnalysysEasyTouch', '1.1.2' // 示例版本号
 
 ```
 /*********** 易达 SDK 初始化 ***********/
-// 以下两项为毕传参数，更多属性请参考 AnalysysEaConfig 头文件
+// 以下两项为必传参数，更多属性请参考 AnalysysEaConfig 头文件
 AnalysysEaConfig *config = [AnalysysEaConfig defaultConfiguration];
 config.appKey= @"易达后台创建项目的 AppKey";
 config.applicationGroupIdentifier = @"App 创建的 App Groups ID";
